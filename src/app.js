@@ -26,6 +26,8 @@ import initializePassportGithub from './config/github.passport.js'
 import initializePassportLocal from './config/local.passport.js'
 import { initializePassportJWT } from './config/jwt.passport.js'
 
+import { generateProductsMock } from './mocks/products.mock.js'
+
 // initial configuration
 
 const app = express();
@@ -117,4 +119,8 @@ app.use("/", routerViews);
 app.use("/api/messages", routerMessages);
 app.use("/api/products", routerProducts);
 app.use("/api/carts", routerCarts);
-app.use('/api/sessions', routerSession)
+app.use('/api/sessions', routerSession);
+
+// mock - desafio 10 - TODO: Quiza quitar mas adelante
+
+app.get("/mockingproducts", async (req, res) => res.send(generateProductsMock(100)))
