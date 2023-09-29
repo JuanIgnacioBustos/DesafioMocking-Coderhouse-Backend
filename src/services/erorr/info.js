@@ -9,7 +9,7 @@ export const generateProductCodeErrorInfo = (product) => {
     }
     
     export const generateMissingProductsParamsErrorInfo = (product) => {
-        return `One or more properties were completed or invalid
+        return `One or more properties were incomplete or invalid
         List of required properties:
         *title: ${product.title},
         *description: ${product.description}
