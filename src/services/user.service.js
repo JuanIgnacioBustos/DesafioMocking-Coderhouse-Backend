@@ -1,4 +1,4 @@
-import UserManager from "../daos/mongodb/managers/UserManager.class.js";
+import UserManager from "../daos/mongodb/managers/UserMongo.dao.js";
 import CartService from "../services/cart.service.js"
 
 export default class UserService {

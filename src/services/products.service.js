@@ -1,4 +1,4 @@
-import ProductManager from "../daos/mongodb/managers/ProductManager.class.js"
+import ProductManager from "../daos/mongodb/managers/ProductMongo.dao.js"
 
 export default class ProductService {
 

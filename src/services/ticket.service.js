@@ -1,4 +1,4 @@
-import TicketManager from "../daos/mongodb/managers/TicketManager.class.js"
+import TicketManager from "../daos/mongodb/managers/TicketMongo.dao.js"
 
 export default class TicketService {
 

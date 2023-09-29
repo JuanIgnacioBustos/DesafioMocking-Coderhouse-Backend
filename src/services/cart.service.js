@@ -1,4 +1,4 @@
-import CartManager from "../daos/mongodb/managers/CartManager.class.js";
+import CartManager from "../daos/mongodb/managers/CartMongo.dao.js";
 import ProductService from "./products.service.js"
 
 export default class CartService {
