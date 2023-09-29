@@ -27,6 +27,7 @@ import initializePassportLocal from './config/local.passport.js'
 import { initializePassportJWT } from './config/jwt.passport.js'
 
 import { generateProductsMock } from './mocks/products.mock.js'
+import { errorMiddleware } from './middlewares/error.js'
 
 // initial configuration
 
@@ -124,3 +125,7 @@ app.use('/api/sessions', routerSession);
 // mock - desafio 10 - TODO: Quiza quitar mas adelante
 
 app.get("/mockingproducts", async (req, res) => res.send(generateProductsMock(100)))
+
+// error middleware
+
+app.use(errorMiddleware)
