@@ -1,5 +1,9 @@
 import { productsModel } from '../models/products.model.js'
 
+import CustomError from "../../../services/error/CustomError.js"
+import { generateProductErrorInfo } from "../../../services/error/info.js"
+import { ErrorEnum } from "../../../services/error//enum.js"
+
 export default class ProductManager {
 
     async addProduct(product) {
@@ -8,7 +12,12 @@ export default class ProductManager {
         return result
         }
         catch(error) {
-        throw new Error("Product code is duplicated")
+        CustomError.createError({
+            name: "Product duplicated",
+            cause: generateProductErrorInfo(product),
+            message: "Product couldn't be created",
+            code: ErrorEnum.PRODUCT_ALREADY_EXISTS
+        })
         }
     }
 
@@ -54,5 +63,5 @@ export default class ProductManager {
         let result = await productsModel.deleteOne({ _id: id })
         return result
     }
-
+    
 }

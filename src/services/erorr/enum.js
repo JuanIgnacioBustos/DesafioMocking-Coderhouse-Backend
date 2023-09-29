@@ -1,3 +1,5 @@
+// Son los distintos codigos de error
+
 export const ErrorEnum = {
     ROUTING_ERROR: 1,
     INVALID_TYPES_ERROR: 2, // El tipo de dato no es correcto

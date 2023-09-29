@@ -45,7 +45,7 @@ const getProductById = async (req, res) => {
     res.send(product)
 }
 
-const addProduct = async (req, res) => {
+const addProduct = async (req, res, next) => {
     try {
         let newProduct = req.body
 
@@ -57,7 +57,7 @@ const addProduct = async (req, res) => {
         res.send({status: "success"})
     }
     catch(error) {
-        res.status(400).send({status: "failure", details: error.message})
+        return next(error)
     }
 }
 

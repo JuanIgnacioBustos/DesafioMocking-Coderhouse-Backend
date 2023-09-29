@@ -1,24 +1,18 @@
+import { ErrorEnum } from "../services/error/enum.js";
+
 export const errorMiddleware = (error, req, res, next) => {
-    console.log(error.cause);
-    
     switch (error.code) {
         case ErrorEnum.ROUTING_ERROR:
-            res.send({ status: "error", error: error.name, cause: error.cause });
-            break;
+        return res.send({ status: "error", error: error.name, cause: error.cause });
         case ErrorEnum.INVALID_TYPES_ERROR:
-            res.send({ status: "error", error: error.name, cause: error.cause });
-            break;
+        return res.send({ status: "error", error: error.name, cause: error.cause });
         case ErrorEnum.DATABASE_ERROR:
-            res.send({ status: "error", error: error.name, cause: error.cause });
-            break;
+        return res.send({ status: "error", error: error.name, cause: error.cause });
         case ErrorEnum.PARAM_ERROR:
-            res.send({ status: "error", error: error.name, cause: error.cause });
-            break;
+        return res.send({ status: "error", error: error.name, cause: error.cause });
         case ErrorEnum.PRODUCT_ALREADY_EXISTS:
-            res.send({ status: "error", error: error.name, cause: error.cause });
-            break;
-    
+        return res.send({ status: "error", error: error.name, cause: error.cause });
         default:
-            res.send({ status: "error", message: "Unhandled Error" });
-        }
-    };
+        return res.send({ status: "error", message: "Unhandled Error" });
+    }
+};
