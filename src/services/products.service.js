@@ -1,7 +1,7 @@
 import ProductManager from "../daos/mongodb/managers/ProductMongo.dao.js"
 
 import CustomError from "./error/CustomError.js"
-import { generateProductErrorInfo } from "./error/info.js"
+import { generateProductCodeErrorInfo, generateProductIdErrorInfo } from "./error/info.js"
 import { ErrorEnum } from "./error/enum.js"
 
 export default class ProductService {
@@ -17,15 +17,29 @@ export default class ProductService {
     }
     
     async getProductById(productId) {
-        let product = await this.productDao.getProductById(productId)
-    
-        return product
+        let products = await this.productDao.getProducts()
+
+        for (let prod of products.docs) {
+        if (prod._id.toString() === productId) {
+            let product = await this.productDao.getProductById(productId)
+
+            return product
+        }
+        }
+        
+        // No se encontro ningun producto con este Id
+
+        CustomError.createError({
+        name: "Product does not exist",
+        cause: generateProductIdErrorInfo(productId),
+        message: "Product couldn't be found",
+        code: ErrorEnum.PRODUCT_DOES_NOT_EXIST
+        })
+
     }
     
     async addProduct(newProduct) {
         let products = await this.productDao.getProducts()
-
-        console.log(products.docs)
 
         for (let prod of products.docs) {
         if (prod.code === newProduct.code) {

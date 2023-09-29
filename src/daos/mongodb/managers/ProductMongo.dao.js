@@ -38,6 +38,7 @@ export default class ProductManager {
 
     async getProductById(id) {
         let result = await productsModel.findOne({ _id: id })
+
         return result
     }
 

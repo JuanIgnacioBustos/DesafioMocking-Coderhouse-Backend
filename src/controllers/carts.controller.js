@@ -30,7 +30,7 @@ const createCart = async (req, res) => {
     res.send({status: "success"})
 }
 
-const addProductToCart = async (req, res) => {
+const addProductToCart = async (req, res, next) => {
     try {
         let cartId = req.params.cid
         let productId = req.params.pid
@@ -40,7 +40,7 @@ const addProductToCart = async (req, res) => {
         res.send({status: "success"})
     }
     catch(error) {
-        res.status(400).send({status: "failure", details: error.message})
+        return next(error)
     }
 }
 
@@ -89,17 +89,18 @@ const updateProductQuantityFromCart = async (req, res) => {
 // de stock), que igualmente se complete la compra... pero solo para los productos que pudieron ser
 // comprados (y devolver ademas del ticket, los productos que no pudieron comprarse)
 
+
 const purchaseProductsFromCart = async (req, res) => {
-  let code = uuidV4() // Autogenerado con uuid
+    let code = uuidV4() // Autogenerado con uuid
 
-  let purchaseData = await cartService.purchaseAllProductsFromCart(req.user.cart) // Se hace la compra
+    let purchaseData = await cartService.purchaseAllProductsFromCart(req.user.cart) // Se hace la compra
 
-// Se eliminan del carrito los productos que pudieron ser comprados
+    // Se eliminan del carrito los productos que pudieron ser comprados
     await cartService.deleteProductsFromCart(req.user.cart, purchaseData.productsBought) 
 
     let ticketData = {
         code: code,
-        products: purchaseData.productsBought, 
+        products: purchaseData.productsBought, // TODO: Quiza cambiar el formato de envio de productos
         amount: purchaseData.total,
         purchaser: req.user.email
     }

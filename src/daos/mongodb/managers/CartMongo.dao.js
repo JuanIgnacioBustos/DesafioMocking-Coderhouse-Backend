@@ -18,26 +18,21 @@ export default class CartManager {
     }
 
     async addProductToCart(cid, newProduct) {
-        try {
         const cart = await this.getCartById(cid)
 
         let product = cart.products.find((prod) => prod.product._id.toString() === newProduct._id.toString() ) // Es el producto, si existe
 
         if (!product) {
-            cart.products.push({ product: newProduct, quantity: 1 }) // Como el producto no existia anteriormente, se agrega
-            // Se podria pasar el _id en vez del producto entero y funcionaria igual (product: newProduct._id)
+        cart.products.push({ product: newProduct, quantity: 1 }) // Como el producto no existia anteriormente, se agrega
+        // Se podria pasar el _id en vez del producto entero y funcionaria igual (product: newProduct._id)
         }
         else {
-            product.quantity += 1 // Como el producto ya existe, solo incremento su cantidad en 1
+        product.quantity += 1 // Como el producto ya existe, solo incremento su cantidad en 1
         }
         
         await cart.save()
 
         return
-        } 
-        catch(error) {
-        throw new Error("Product does not exist")
-        }
     }
 
     async deleteProductFromCart(cid, pid) {

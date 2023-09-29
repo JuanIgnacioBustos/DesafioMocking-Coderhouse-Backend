@@ -32,17 +32,17 @@ const getProducts = async (req, res) => {
     }
 }
 
-const getProductById = async (req, res) => {
-    let id = req.params.pid
+const getProductById = async (req, res, next) => {
+    try {
+        let id = req.params.pid
 
-    let product = await productService.getProductById(id)
+        let product = await productService.getProductById(id)
 
-    if (!product) {
-        res.send("No se encontró el producto")
-        return
+        res.send(product)
     }
-
-    res.send(product)
+    catch(error) {
+        return next(error)
+    }
 }
 
 const addProduct = async (req, res, next) => {

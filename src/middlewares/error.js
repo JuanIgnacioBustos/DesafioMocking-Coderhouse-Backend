@@ -12,6 +12,8 @@ export const errorMiddleware = (error, req, res, next) => {
         return res.send({ status: "error", error: error.name, cause: error.cause });
         case ErrorEnum.PRODUCT_ALREADY_EXISTS:
         return res.send({ status: "error", error: error.name, cause: error.cause });
+        case ErrorEnum.PRODUCT_DOES_NOT_EXIST:
+        return res.send({ status: "error", error: error.name, cause: error.cause });
         default:
         return res.send({ status: "error", message: "Unhandled Error" });
     }
