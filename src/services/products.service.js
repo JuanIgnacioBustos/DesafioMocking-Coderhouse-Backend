@@ -1,7 +1,11 @@
 import ProductManager from "../daos/mongodb/managers/ProductMongo.dao.js"
 
 import CustomError from "./error/CustomError.js"
-import { generateProductCodeErrorInfo, generateProductIdErrorInfo } from "./error/info.js"
+import { 
+    generateMissingProductsParamsErrorInfo,
+    generateProductCodeErrorInfo,
+    generateProductIdErrorInfo 
+} from "./error/info.js"
 import { ErrorEnum } from "./error/enum.js"
 
 export default class ProductService {
@@ -20,7 +24,7 @@ export default class ProductService {
         let products = await this.productDao.getProducts()
 
         for (let prod of products.docs) {
-        if (prod._id.toString() === productId) {
+        if (prod._id.toString() === productId.toString()) {
             let product = await this.productDao.getProductById(productId)
 
             return product
@@ -40,7 +44,22 @@ export default class ProductService {
     
     async addProduct(newProduct) {
         let products = await this.productDao.getProducts()
+        
+        const requiredParameters = ["title", "description", "price", "code", "stock", "category", "status"]
+        
+        // Vemos si falta algun parametro
+        for (let param of requiredParameters) {
+        if (!newProduct[param]) {
+            CustomError.createError({
+            name: "Missing parameters",
+            cause: generateMissingProductsParamsErrorInfo(newProduct),
+            message: "Product couldn't be created",
+            code: ErrorEnum.PARAM_ERROR
+            })
+        }
+        }
 
+        // Vemos que el codigo no se repita
         for (let prod of products.docs) {
         if (prod.code === newProduct.code) {
             CustomError.createError({
@@ -51,7 +70,7 @@ export default class ProductService {
             })
         }
         }
-
+        
         await this.productDao.addProduct(newProduct)
     }
     
