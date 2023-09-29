@@ -1,0 +1,63 @@
+<div>
+    <h2>Bienvenido, {{user.name}}</h2>
+    <p>Mail: {{user.email}}</p>
+    <p>Rol:  {{user.role}} </p>
+    <p id="cart-id">Id del Carrito: {{user.cart}} </p>
+    <button id="logout-btn">Logout</button>
+</div>
+
+<h1>Productos: </h1>
+
+{{#if products.docs.length}}
+    <div>
+        {{#each products.docs}}
+            <div style="border: 1px solid #000; border-radius: 1rem; padding: 1rem; margin-bottom: 1rem">
+            <p> Title: {{this.title}} </p>
+            <p> Description: {{this.description}} </p>
+            <p> Price: {{this.price}} </p>
+            <button id={{this._id}} onclick="addProductToCart(this)">Agregar al carrito</button>
+            </div>
+        {{/each}}
+    </div>
+    <br/>
+
+    <div>
+        {{#if products.hasPrevPage}}
+            <a href={{products.prevLink}}><<</a>
+        {{/if}}
+        {{#if products.hasNextPage}}
+            <a href={{products.nextLink}}>>></a>
+        {{/if}} 
+    </div>
+{{else}}
+    <h1>No hay productos</h1>
+{{/if}}
+
+<script>
+    async function addProductToCart(button) {
+        let productId = button.id
+        let cartId = document.getElementById("cart-id").innerText.split(" ")[3] 
+
+        try {     
+        let url = "http://localhost:8080/api/carts/"+ cartId + "/product/" + productId
+
+        const response = await fetch(url, {
+            method: 'post'
+        });
+        } 
+        catch(err) {
+        console.error(`Error: ${err}`);
+        }
+    }
+</script>
+
+<script>
+    let logoutButton = document.getElementById("logout-btn")
+
+    logoutButton.addEventListener("click", (evt) => {
+        fetch('http://localhost:8080/api/sessions/logout', {method: 'post'})
+        .then( res => {
+        return window.location.replace('/login')
+        })
+    })
+</script>
