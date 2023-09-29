@@ -45,7 +45,7 @@ export default class ProductService {
         if (prod.code === newProduct.code) {
             CustomError.createError({
             name: "Product duplicated",
-            cause: generateProductErrorInfo(newProduct),
+            cause: generateProductCodeErrorInfo(newProduct),
             message: "Product couldn't be created",
             code: ErrorEnum.PRODUCT_ALREADY_EXISTS
             })
