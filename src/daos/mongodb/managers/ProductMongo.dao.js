@@ -1,30 +1,17 @@
 import { productsModel } from '../models/products.model.js'
 
-import CustomError from "../../../services/error/CustomError.js"
-import { generateProductErrorInfo } from "../../../services/error/info.js"
-import { ErrorEnum } from "../../../services/error//enum.js"
-
 export default class ProductManager {
 
     async addProduct(product) {
-        try {
         let result = await productsModel.create(product)
         return result
-        }
-        catch(error) {
-        CustomError.createError({
-            name: "Product duplicated",
-            cause: generateProductErrorInfo(product),
-            message: "Product couldn't be created",
-            code: ErrorEnum.PRODUCT_ALREADY_EXISTS
-        })
-        }
     }
 
     async getProducts(limit = 10, page = 1, sort = 0, filter = null, filterValue = null) {
         limit = Number(limit)
         page = Number(page)
         sort = Number(sort)
+
         let options;
 
         let filterToApply = {}
